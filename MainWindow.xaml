@@ -1,0 +1,253 @@
+﻿<Window x:Class="WpfApp1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp1"
+        mc:Ignorable="d"
+        ResizeMode="NoResize"
+        Title="Financial History Importer by Toth Patrik Csaba" Height="370" Width="880" Icon="/Images/MoneyIcon.png">
+    <Grid  VerticalAlignment="Top" Background="#ECECEA">
+        <Frame x:Name="MainFrame" Margin="150,70,0,0" NavigationUIVisibility="Hidden" BorderBrush="Black" BorderThickness="0"/>
+        <DockPanel Margin="0,70,730,0" Background="#ECECEA">
+            <Border Margin="0,0,730,0">
+                <Canvas Margin="0,0,570,0">
+                    <StackPanel x:Name="menuStackPanel" Background="#D9853B" Width="150" Margin="-90,0,0,0">
+                        <StackPanel.Resources>
+                            <local:ExpanderToBooleanConverter x:Key="ExpanderToBooleanConverter" />
+                        </StackPanel.Resources>
+                        <StackPanel.Style>
+                            <Style TargetType="StackPanel">
+                                <Style.Triggers>
+                                    <EventTrigger RoutedEvent="MouseEnter">
+                                        <EventTrigger.Actions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <ThicknessAnimation Storyboard.TargetProperty="Margin" From="-90,0,0,0" To="0,0,0,0" DecelerationRatio=".4" Duration="0:0:0.5"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger.Actions>
+                                    </EventTrigger>
+                                    <EventTrigger RoutedEvent="MouseLeave">
+                                        <EventTrigger.Actions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <ThicknessAnimation Storyboard.TargetProperty="Margin" From="0,0,0,0" To="-90,0,0,0" DecelerationRatio=".9" Duration="0:0:0.5"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger.Actions>
+                                    </EventTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+                        <DockPanel  x:Name="importDock">
+                            <Expander>
+                                <Expander.Style>
+                                    <Style TargetType="{x:Type Expander}">
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="IsExpanded" Value="True" />
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="False">
+                                                <Setter Property="IsExpanded" Value="False" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Expander.Style>
+                                <Expander.Header>
+                                    <BulletDecorator>
+                                        <BulletDecorator.Bullet>
+                                            <Button  Height="45" Width="125" x:Name="ImportButton" Content="Import" Command="{Binding Path=ImportPushed}">
+                                                <Button.Template>
+                                                    <ControlTemplate>
+                                                        <Canvas>
+                                                            <Image Source="/Images/attachIcon2.png" Height="30" Canvas.Right="15" Canvas.Top="8"/>
+                                                            <TextBlock Canvas.Left="0" Canvas.Top="8" Text="Import" FontFamily="Bookman Old Style" FontSize="17" Foreground="white" Margin="0,5,0,0"/>
+                                                        </Canvas>
+                                                    </ControlTemplate>
+                                                </Button.Template>
+                                            </Button>
+                                        </BulletDecorator.Bullet>
+                                    </BulletDecorator>
+                                </Expander.Header>
+                                <WrapPanel>
+                                    <Button x:Name="bankImport" Margin="20,5,5,5" Foreground="white" Content="Bank Import" Background="Transparent" FontSize="13" Width="120" Command="{Binding Path=bankImportPushed}"/>
+                                    <Button x:Name="stockImport" Margin="20,5,5,5" Foreground="white" Content="Stock Import" Background="Transparent" FontSize="13" Width="120" Command="{Binding Path=stockImportPushed}"/>
+                                </WrapPanel>
+                            </Expander>
+                        </DockPanel>
+                        <DockPanel x:Name="tableDock">
+                            <Expander><!--IsExpanded="{Binding SelectedExpander, Mode=TwoWay, Converter={StaticResource ExpanderToBooleanConverter}, ConverterParameter=2}"-->
+                                <Expander.Style>
+                                    <Style TargetType="{x:Type Expander}">
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="IsExpanded" Value="True" />
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="False">
+                                                <Setter Property="IsExpanded" Value="False" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Expander.Style>
+                                <Expander.Header>
+                                    <BulletDecorator>
+                                        <BulletDecorator.Bullet>
+                                            <Button Height="45" Width="125" x:Name="TableButton" Content="Database" Command="{Binding Path=TablePushed}">
+                                                <Button.Template>
+                                                    <ControlTemplate>
+                                                        <Canvas>
+                                                            <Image Source="/Images/tableIcon8.png" Height="30" Canvas.Right="15" Canvas.Top="8"/>
+                                                            <TextBlock Canvas.Left="0" Canvas.Top="8" Text="Databse" FontFamily="Bookman Old Style" FontSize="16" Foreground="white" Margin="0,5,0,0"/>
+                                                        </Canvas>
+                                                    </ControlTemplate>
+                                                </Button.Template>
+                                            </Button>
+                                        </BulletDecorator.Bullet>
+                                    </BulletDecorator>
+                                </Expander.Header>
+                                <WrapPanel>
+                                    <Button x:Name="bankDatabase" Margin="20,5,5,5" Foreground="white" Content="Bank transactions" Background="Transparent" FontSize="14" Width="120" Command="{Binding Path=bankDatabasePushed}"/>
+                                    <Button x:Name="stockDatabase" Margin="20,5,5,5" Foreground="white" Content="Stock transactions" Background="Transparent" FontSize="14" Width="120" Command="{Binding Path=stockDatabasePushed}"/>
+                                </WrapPanel>
+                            </Expander>
+                        </DockPanel>
+                        <DockPanel Margin="0,0,0,0" x:Name="stockChartDock">
+                            <Expander><!--IsExpanded="{Binding SelectedExpander, Mode=TwoWay, Converter={StaticResource ExpanderToBooleanConverter}, ConverterParameter=3}"-->
+                                <Expander.Style>
+                                    <Style TargetType="{x:Type Expander}">
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="IsExpanded" Value="True" />
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="False">
+                                                <Setter Property="IsExpanded" Value="False" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Expander.Style>
+                                <Expander.Header>
+                                    <BulletDecorator>
+                                        <BulletDecorator.Bullet>
+                                            <Button Height="45" Width="125" x:Name="StockChartButton" Content="stockMarketData" Command="{Binding Path=PortfolioPushed}">
+                                                <Button.Template>
+                                                    <ControlTemplate>
+                                                        <Canvas>
+                                                            <Image Source="/Images/chartIcon.png" Height="30" Canvas.Right="15" Canvas.Top="8"/>
+                                                            <TextBlock Canvas.Left="0" Canvas.Top="8" Text="Portfolio" FontFamily="Bookman Old Style" FontSize="16" Foreground="white" Margin="0,5,0,0"/>
+                                                        </Canvas>
+                                                    </ControlTemplate>
+                                                </Button.Template>
+                                            </Button>
+                                        </BulletDecorator.Bullet>
+                                    </BulletDecorator>
+                                </Expander.Header>
+                                <WrapPanel>
+                                    <StackPanel>
+                                        <Button x:Name="stockChart" Margin="20,5,5,5" Foreground="white" Content="Chart" Background="Transparent" FontSize="14" Width="120" Command="{Binding Path=stockChartPushed}"/>
+                                        <Button x:Name="stockDatagrid" Margin="20,5,5,5" Foreground="white" Content="DataGrid" Background="Transparent" FontSize="14" Width="120" Command="{Binding Path=stockDatagridPushed}"/>
+                                    </StackPanel>
+                                </WrapPanel>
+                            </Expander>
+                        </DockPanel>
+                        <DockPanel  x:Name="exitDock">
+                            <Expander><!--IsExpanded="{Binding SelectedExpander, Mode=TwoWay, Converter={StaticResource ExpanderToBooleanConverter}, ConverterParameter=4}"-->
+                                <Expander.Style>
+                                    <Style TargetType="{x:Type Expander}">
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="IsExpanded" Value="True" />
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="False">
+                                                <Setter Property="IsExpanded" Value="False" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Expander.Style>
+                                <Expander.Header>
+                                    <BulletDecorator>
+                                        <BulletDecorator.Bullet>
+                                            <Button Height="45" Width="125" x:Name="ExitButton" Content="Exit">
+                                                <Button.Template>
+                                                    <ControlTemplate>
+                                                        <Canvas>
+                                                            <Image Source="/Images/exitIcon5.png" Height="30" Canvas.Right="15" Canvas.Top="8"/>
+                                                            <TextBlock Canvas.Left="0" Canvas.Top="8" Text="Exit" FontFamily="Bookman Old Style" FontSize="17" Foreground="white" Margin="0,5,0,0"/>
+                                                        </Canvas>
+                                                    </ControlTemplate>
+                                                </Button.Template>
+                                            </Button>
+                                        </BulletDecorator.Bullet>
+                                    </BulletDecorator>
+                                </Expander.Header>
+                                <WrapPanel>
+                                    <StackPanel>
+                                        <Button Margin="20,5,5,5" Foreground="white" Content="Quit" Background="Transparent" FontSize="14" Width="120" Command="{Binding Path=QuitPushed}"/>
+                                        <Button Margin="20,5,5,5" Foreground="white" Content="Log out" Background="Transparent" FontSize="14" Width="120" Command="{Binding Path=LogOutPushed}"/>
+                                    </StackPanel>
+                                </WrapPanel>
+                            </Expander>
+                        </DockPanel>
+                    </StackPanel>
+                </Canvas>
+            </Border>
+        </DockPanel>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="70" VerticalAlignment="Top" Width="150" Background="#2c3e50">
+            <StackPanel>
+                <DockPanel >
+                    <Label Content="Financial" FontSize="15" Margin="40,3,0,0" Foreground="White" FontFamily="Bookman Old Style"/>
+                </DockPanel>
+                <Label Content="History Importer" FontSize="15" Margin="10,0,0,0" Foreground="White" FontFamily="Bookman Old Style"/>
+            </StackPanel>
+        </Border>
+        <Border x:Name="importMenuTop" BorderBrush="Black" BorderThickness="0,0,0,1" HorizontalAlignment="Left" Height="70" Margin="150,0,0,0" VerticalAlignment="Top" Width="639" Background="#74AFAD">
+            <StackPanel>
+                <DockPanel Margin="0,0,0,0">
+                    <Canvas>
+                        <Image Source="/Images/attachIcon2.png" Width="70" Margin="10,5,635,0" Height="55"/>
+                        <Label Content="Import your Financial History" Margin="80,8,0,0" FontSize="20" FontFamily="Arial" Foreground="White"/>
+                    </Canvas>
+                </DockPanel>
+                <StackPanel Margin="85,30,0,0">
+                    <Label Foreground="Black" FontSize="13" Content="In this Menu you Import your Financial History datas."></Label>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+        <Border x:Name="tableMenuTop" BorderBrush="Black" BorderThickness="0,0,0,1" HorizontalAlignment="Left" Height="70" Margin="150,0,0,0" VerticalAlignment="Top" Width="639" Background="#74AFAD">
+            <StackPanel>
+                <DockPanel Margin="0,0,0,0">
+                    <Canvas>
+                        <Image Source="/Images/tableIcon8.png" Width="70" Margin="10,5,635,0" Height="55"/>
+                        <Label Content="Transactions in Database" Margin="80,8,0,0" FontSize="20" FontFamily="Arial" Foreground="White"/>
+                    </Canvas>
+                </DockPanel>
+                <StackPanel Margin="85,30,0,0">
+                    <Label Foreground="Black" FontSize="13" Content="In this Menu you can see your Financial History Table from Database."></Label>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+        <Border x:Name="portfolioMenuTop" BorderBrush="Black" BorderThickness="0,0,0,1" HorizontalAlignment="Left" Height="70" Margin="150,0,0,0" VerticalAlignment="Top" Width="639" Background="#74AFAD">
+            <StackPanel>
+                <DockPanel Margin="0,0,0,0">
+                    <Canvas>
+                        <Image Source="/Images/chartIcon.png" Width="70" Margin="10,5,635,0" Height="55"/>
+                        <Label Content="Share Pices" Margin="80,8,0,0" FontSize="20" FontFamily="Arial" Foreground="White"/>
+                    </Canvas>
+                </DockPanel>
+                <StackPanel Margin="85,30,0,0">
+                    <Label Foreground="Black" FontSize="13" Content="In this Menu you can see different share prices updated from Google Finance."></Label>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+        <Border x:Name="userNotification" BorderBrush="Black" BorderThickness="1,0,0,1" HorizontalAlignment="Left" Height="70" Margin="766,0,0,0" VerticalAlignment="Top" Width="106" Background="#74AFAD">
+            <StackPanel >
+                <Canvas>
+                    <Image Source="/Images/alarmIcon3.png" Width="48" Height="45" Canvas.Right="10" Canvas.Top="10"/>
+                    <Image x:Name="exclamImage" Source="pack://application:,,,/Images/exclamIcon.png" Height="20"  Width="20" Canvas.Bottom="-15" Canvas.Right="10" Canvas.Top="3" ToolTip="You didn't imported new since one month!!"/>
+                    <Label x:Name="currentUserLabel" Content="User"  FontWeight="Bold" Canvas.Bottom="-70" Canvas.Right="40"/>
+                </Canvas>
+            </StackPanel>
+        </Border>
+        <Frame x:Name="LoginFrame" HorizontalAlignment="Left" Height="337" VerticalAlignment="Top" Width="880" NavigationUIVisibility="Hidden"/>
+    </Grid>
+</Window>
